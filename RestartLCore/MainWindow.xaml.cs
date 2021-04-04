@@ -30,19 +30,12 @@ namespace RestartLCore
         public MainWindow()
         {
             InitializeComponent();
+
+            // Track windows session events
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
 
-            // Minimize to notification area stuff
-            notifyIcon = new System.Windows.Forms.NotifyIcon();
-            notifyIcon.BalloonTipText = "The app is running. Double-click to show window.";
-            notifyIcon.BalloonTipTitle = "Restart LCore";
-            notifyIcon.Text = "Restart LCore";
-
-            using (Stream iconStream = Application.GetResourceStream(new Uri("pack://application:,,,/icon.ico")).Stream) {
-                notifyIcon.Icon = new System.Drawing.Icon(iconStream);
-            }
-            
-            notifyIcon.DoubleClick += new EventHandler(notifyIcon_DoubleClick);
+            // Initialize notification area features
+            InitializeNotificationArea();
 
         }
 
@@ -68,46 +61,17 @@ namespace RestartLCore
             }
         }
 
-        private void RestartProcess(string proc, string procLocation)
-        {   
-            KillProcess(proc);
-
-            AppendLog($"Starting process {procLocation}");
-            StartProcess(procLocation);
-        }
-
-        private void AppendLog(string text)
-        {
-            Log.Text += $"{DateTime.Now} - {text} \n";
-        }
-
-        private void KillProcess(string procName)
-        {
-            Process[] procs = Process.GetProcessesByName(procName);
-
-            foreach (Process proc in procs)
-            {
-                if (proc.ProcessName == procName)
-                {
-                    proc.Kill();
-                    AppendLog($"{proc.ProcessName} killed");
-                }
-            }
-        }
-
-        private void StartProcess(string procName)
-        {
-            Process proc = new Process();
-            proc.StartInfo.FileName = procName;
-            proc.Start();
-        }
-
         private void Button_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
                 RestartProcess("LCore", @"C:\Program Files\Logitech Gaming Software\Lcore.exe");
             }
+        }
+
+        public void AppendLog(string text)
+        {
+            Log.Text += $"{DateTime.Now} - {text} \n";
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -129,6 +93,13 @@ namespace RestartLCore
         private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             CheckTrayIcon();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Hide();
+            if (notifyIcon != null)
+                notifyIcon.ShowBalloonTip(2000);
         }
     }
 }
