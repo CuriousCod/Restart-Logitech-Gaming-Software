@@ -12,9 +12,8 @@
             <ColumnDefinition Width="89*"/>
             <ColumnDefinition Width="53*"/>
         </Grid.ColumnDefinitions>
-        <Button PreviewMouseDown="Button_MouseDown" Content="Restart LCore" HorizontalAlignment="Left" VerticalAlignment="Top" Width="146" Margin="26,330,0,0" Height="39" Background="DarkSlateGray" FontFamily="Segoe UI" Foreground="White" FontSize="16" FontWeight="DemiBold" MouseDown="Button_MouseDown"/>
-        <TextBlock Name="Log" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="285" Margin="26,24,42,0" Background="DarkSlateGray" FontFamily="Segoe UI" Foreground="White" FontSize="14" FontWeight="DemiBold" Grid.ColumnSpan="3"/>
-
+        <Button x:Name="buttonRestartProgram" PreviewMouseDown="Button_MouseDown" Content="Restart LCore" HorizontalAlignment="Left" VerticalAlignment="Top" Width="146" Margin="26,330,0,0" Height="39" Background="DarkSlateGray" FontFamily="Segoe UI" Foreground="White" FontSize="16" FontWeight="DemiBold" MouseDown="Button_MouseDown"/>
+        <TextBox Name="Log" IsReadOnly="True" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="285" Margin="26,24,0,0" Background="DarkSlateGray" FontFamily="Segoe UI" Foreground="White" FontSize="14" FontWeight="DemiBold" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto" ></TextBox>
     </Grid>
     <Window.Resources>
         <ContextMenu x:Key="Menu1">
