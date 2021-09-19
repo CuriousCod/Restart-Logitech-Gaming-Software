@@ -53,39 +53,63 @@ namespace RestartLCore
 
         public string CloseAppWindow(string procWindowName)
         {
-            IntPtr windowPtr = IntPtr.Zero;
+            IntPtr firstWindowPtr = IntPtr.Zero;
+            IntPtr secondWindowPtr = IntPtr.Zero; // The ptr changes when the window opens up
 
             int counter = 0;
 
-            // Wait for the window to open
-            while (windowPtr == IntPtr.Zero)
+            Task<string> results = Task.Run(async () =>
             {
-                windowPtr = FindWindowByCaption(IntPtr.Zero, procWindowName);
-
-                Thread.Sleep(500);
-
-                // Prevent infinite loop, in case window is not found in the set time period
-                if (counter > 10)
+                // Wait for the window to open
+                while (firstWindowPtr == IntPtr.Zero)
                 {
-                    break;
+                    firstWindowPtr = FindWindowByCaption(IntPtr.Zero, procWindowName);
+
+                    await Task.Delay(200);
+
+                    // Prevent infinite loop, in case window is not found in the set time period
+                    if (counter > 50)
+                    {
+                        break;
+                    }
+                    counter += 1;
                 }
-                counter += 1;
-            }
 
-            if (windowPtr != IntPtr.Zero)
-            {
-                // Wait for startup
-                // TODO There should be a better way to determine when the window has initialized
-                Thread.Sleep(2000);
+                if (firstWindowPtr != IntPtr.Zero)
+                {
+                    counter = 0;
+                    IntPtr tempPtr = IntPtr.Zero;
 
-                // Need to grab the window one more time after it has initialized
-                windowPtr = FindWindowByCaption(IntPtr.Zero, procWindowName);
+                    // Grab the second window ptr
+                    while (secondWindowPtr == IntPtr.Zero)
+                    {
+                        await Task.Delay(200);
 
-                SendMessage(windowPtr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-                return $"Attempted to close window {procWindowName}";
-            }
+                        tempPtr = FindWindowByCaption(IntPtr.Zero, procWindowName);
 
-            return $"Could not close window {procWindowName}";
+                        if (tempPtr != firstWindowPtr) 
+                            secondWindowPtr = tempPtr;
+
+                        // Prevent infinite loop, in case window is not found in the set time period
+                        if (counter > 50)
+                        {
+                            break;
+                        }
+                        counter += 1;
+                    }
+
+                    if (secondWindowPtr != IntPtr.Zero) { 
+                        SendMessage(secondWindowPtr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                        return $"Closed window {procWindowName}";
+                    }
+                    else
+                        return $"Could not close window {procWindowName}";
+                }
+                else
+                    return $"Could not close window {procWindowName}";
+            });
+
+            return results.Result;
         }
     }
 }

@@ -67,7 +67,8 @@ namespace RestartLCore
                     break;
                 case SessionSwitchReason.SessionUnlock:
                     // Back from lock/standby
-                    RestartProcess(restartable);
+                    if ((bool)checkbox_RestartOnLogin.IsChecked)
+                        RestartProcess(restartable);
                     break;
                 default:
                     break;

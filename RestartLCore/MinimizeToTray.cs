@@ -7,6 +7,8 @@ using System.Windows;
 
 namespace RestartLCore
 {
+    public class Asd{ public string status = "bar"; }
+
     public partial class MainWindow : Window
     {
 
@@ -41,6 +43,7 @@ namespace RestartLCore
             menuItemExit.Click += new System.EventHandler(menuItemExit_Click);
 
             notifyIcon.ContextMenu = contextMenuNotifyIcon;
+
         }
 
         private void CheckTrayIcon()
