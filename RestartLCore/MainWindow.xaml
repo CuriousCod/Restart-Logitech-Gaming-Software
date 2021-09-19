@@ -12,7 +12,7 @@
             <ColumnDefinition Width="89*"/>
             <ColumnDefinition Width="53*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="buttonRestartProgram" PreviewMouseDown="Button_MouseDown" Content="Restart LCore" HorizontalAlignment="Left" VerticalAlignment="Top" Width="146" Margin="26,360,0,0" Height="39" Background="DarkSlateGray" FontFamily="Segoe UI" Foreground="White" FontSize="16" FontWeight="DemiBold" MouseDown="Button_MouseDown"/>
+        <Button x:Name="buttonRestartProgram" PreviewMouseDown="Button_MouseDown" Content="Restart LCore" HorizontalAlignment="Left" VerticalAlignment="Top" Width="146" Margin="26,358,0,0" Height="39" Background="DarkSlateGray" FontFamily="Segoe UI" Foreground="White" FontSize="16" FontWeight="DemiBold" MouseDown="Button_MouseDown"/>
         <TextBox Name="Log" IsReadOnly="True" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="285" Margin="26,24,23,0" Background="DarkSlateGray" FontFamily="Segoe UI" Foreground="White" FontSize="14" FontWeight="DemiBold" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" ></TextBox>
         <CheckBox Name="checkbox_RestartOnLogin" Content="Restart on login" HorizontalAlignment="Left" Margin="26,325,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="443" Height="20" Foreground="White" FontSize="14" IsChecked="True"/>
     </Grid>
